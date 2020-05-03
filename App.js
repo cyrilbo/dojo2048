@@ -1,19 +1,44 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { SafeAreaView, StyleSheet } from "react-native";
 
-export default function App() {
+import { Board } from "./src/components/Board";
+import { Controller } from "./src/components/Controller";
+import { use2048 } from "./src/hooks/use2048";
+import { Direction } from "./src/types/Direction";
+import { Header } from "./src/components/Header";
+import { GameOverModal } from "./src/components/GameOverModal";
+
+const App = () => {
+  const {
+    cells,
+    newMove,
+    isGameOverModalVisible,
+    hideGameOverModal,
+    score,
+  } = use2048();
+  const getClickHandler = (direction) => () => newMove(direction);
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Header score={score} />
+      <Board cells={cells} />
+      <Controller
+        onClickDown={getClickHandler(Direction.Down)}
+        onClickUp={getClickHandler(Direction.Up)}
+        onClickLeft={getClickHandler(Direction.Left)}
+        onClickRight={getClickHandler(Direction.Right)}
+      />
+      <GameOverModal
+        visible={isGameOverModalVisible}
+        onCloseButtonPressed={hideGameOverModal}
+      />
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
+
+export default App;
