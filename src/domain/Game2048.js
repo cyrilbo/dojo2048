@@ -1,39 +1,37 @@
-import { generateRandomId } from '../utils/id';
-import { CellType } from '../types/Cell';
-import { Direction } from '../types/Direction';
+import { generateRandomId } from "../utils/id";
+import { Direction } from "../types/Direction";
 
 export default class Game2048 {
-  private score: number;
-  private cells: CellType[];
+  score;
+  cells;
 
   constructor() {
     this.restart();
   }
 
-  public getCells() {
+  getCells() {
     return this.cells;
   }
 
-  private getAliveCells = () =>
-    this.cells.filter(cell => cell.status === 'ALIVE');
+  getAliveCells = () => this.cells.filter((cell) => cell.status === "ALIVE");
 
-  public getScore() {
+  getScore() {
     return this.score;
   }
 
-  public getIsGameOver() {
+  getIsGameOver() {
     return this.isGameOver();
   }
 
-  public restart() {
+  restart() {
     this.cells = [];
     this.score = 0;
     this.addNewCell();
     this.addNewCell();
   }
 
-  private getAvailablePositions() {
-    const availablePositions: { x: number; y: number }[] = [];
+  getAvailablePositions() {
+    const availablePositions = [];
     for (let x = 0; x <= 3; x++) {
       for (let y = 0; y <= 3; y++) {
         if (this.getAliveCellAtPosition(x, y)) continue;
@@ -43,14 +41,14 @@ export default class Game2048 {
     return availablePositions;
   }
 
-  private getAliveCellAtPosition(x: number, y: number) {
+  getAliveCellAtPosition(x, y) {
     return (
-      this.getAliveCells().filter(cell => cell.x === x && cell.y === y)[0] ||
+      this.getAliveCells().filter((cell) => cell.x === x && cell.y === y)[0] ||
       null
     );
   }
 
-  private sortCells = (direction: Direction) => {
+  sortCells = (direction) => {
     let sorter = null;
     switch (direction) {
       case Direction.Right:
@@ -69,31 +67,31 @@ export default class Game2048 {
     this.cells = this.cells.sort(sorter);
   };
 
-  private getRandomAvailablePosition = () => {
+  getRandomAvailablePosition = () => {
     const availablePositions = this.getAvailablePositions();
     return availablePositions.splice(
       Math.floor(Math.random() * availablePositions.length),
-      1,
+      1
     )[0];
   };
 
-  private getInitialCellValue = () => {
+  getInitialCellValue = () => {
     return Math.random() < 0.5 ? 2 : 4;
   };
 
-  private addNewCell() {
+  addNewCell() {
     const position = this.getRandomAvailablePosition();
     const value = this.getInitialCellValue();
     this.cells.push({
       x: position.x,
       y: position.y,
       value,
-      status: 'ALIVE',
+      status: "ALIVE",
       id: generateRandomId(),
     });
   }
 
-  private findFirstCellToTheLeft(cell: CellType) {
+  findFirstCellToTheLeft(cell) {
     for (let x = cell.x - 1; x >= 0; x--) {
       const cellFound = this.getAliveCellAtPosition(x, cell.y);
       if (cellFound) return cellFound;
@@ -101,7 +99,7 @@ export default class Game2048 {
     return null;
   }
 
-  private findFirstCellToTheRight(cell: CellType) {
+  findFirstCellToTheRight(cell) {
     for (let x = cell.x + 1; x <= 3; x++) {
       const cellFound = this.getAliveCellAtPosition(x, cell.y);
       if (cellFound) return cellFound;
@@ -109,7 +107,7 @@ export default class Game2048 {
     return null;
   }
 
-  private findFirstCellToTheBottom = (cell: CellType) => {
+  findFirstCellToTheBottom = (cell) => {
     for (let y = cell.y + 1; y <= 3; y++) {
       const cellFound = this.getAliveCellAtPosition(cell.x, y);
       if (cellFound) return cellFound;
@@ -117,7 +115,7 @@ export default class Game2048 {
     return null;
   };
 
-  private findFirstCellToTheTop = (cell: CellType) => {
+  findFirstCellToTheTop = (cell) => {
     for (let y = cell.y - 1; y >= 0; y--) {
       const cellFound = this.getAliveCellAtPosition(cell.x, y);
       if (cellFound) return cellFound;
@@ -125,13 +123,13 @@ export default class Game2048 {
     return null;
   };
 
-  private removeMergedCells = () => {
+  removeMergedCells = () => {
     this.cells = this.cells
-      .filter(cell => cell.status !== 'MERGED')
-      .map(cell => ({ ...cell }));
+      .filter((cell) => cell.status !== "MERGED")
+      .map((cell) => ({ ...cell }));
   };
 
-  private getInitialEmptySpots = (direction: Direction) => {
+  getInitialEmptySpots = (direction) => {
     switch (direction) {
       case Direction.Right:
       case Direction.Down:
@@ -142,17 +140,17 @@ export default class Game2048 {
     }
   };
 
-  newMove = (direction: Direction) => {
+  newMove = (direction) => {
     this.removeMergedCells();
     this.sortCells(direction);
     let emptySpots = this.getInitialEmptySpots(direction);
     for (let cell of this.cells) {
-      if (cell.status === 'MERGED') continue;
+      if (cell.status === "MERGED") continue;
       if (direction === Direction.Right) {
         const firstCellToTheLeft = this.findFirstCellToTheLeft(cell);
         if (firstCellToTheLeft && firstCellToTheLeft.value === cell.value) {
           this.score += cell.value * 2;
-          firstCellToTheLeft.status = 'MERGED';
+          firstCellToTheLeft.status = "MERGED";
           firstCellToTheLeft.x = emptySpots[cell.y];
           cell.value = cell.value * 2;
         }
@@ -162,7 +160,7 @@ export default class Game2048 {
         const firstCellToTheRight = this.findFirstCellToTheRight(cell);
         if (firstCellToTheRight && firstCellToTheRight.value === cell.value) {
           this.score += cell.value * 2;
-          firstCellToTheRight.status = 'MERGED';
+          firstCellToTheRight.status = "MERGED";
           firstCellToTheRight.x = emptySpots[cell.y];
           cell.value = cell.value * 2;
         }
@@ -172,7 +170,7 @@ export default class Game2048 {
         const firstCellToTheBottom = this.findFirstCellToTheBottom(cell);
         if (firstCellToTheBottom && firstCellToTheBottom.value === cell.value) {
           this.score += cell.value * 2;
-          firstCellToTheBottom.status = 'MERGED';
+          firstCellToTheBottom.status = "MERGED";
           firstCellToTheBottom.y = emptySpots[cell.x];
           cell.value = cell.value * 2;
         }
@@ -182,7 +180,7 @@ export default class Game2048 {
         const firstCellToTheTop = this.findFirstCellToTheTop(cell);
         if (firstCellToTheTop && firstCellToTheTop.value === cell.value) {
           this.score += cell.value * 2;
-          firstCellToTheTop.status = 'MERGED';
+          firstCellToTheTop.status = "MERGED";
           firstCellToTheTop.y = emptySpots[cell.x];
           cell.value = cell.value * 2;
         }
@@ -195,9 +193,9 @@ export default class Game2048 {
     }
   };
 
-  public isBoardFull = () => this.getAliveCells().length === 16;
+  isBoardFull = () => this.getAliveCells().length === 16;
 
-  public isGameOver = () => {
+  isGameOver = () => {
     if (!this.isBoardFull()) return false;
     for (let x = 0; x <= 3; x++) {
       for (let y = 0; y <= 3; y++) {

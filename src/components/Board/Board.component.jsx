@@ -1,16 +1,11 @@
-import React, { FC } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React from "react";
+import { View, StyleSheet } from "react-native";
 
-import { style } from '../../theme/style';
-import { colors } from '../../theme/colors';
-import { CellType } from '../../types/Cell';
-import { AnimatedCell } from '../Cell';
+import { style } from "../../theme/style";
+import { colors } from "../../theme/colors";
+import { AnimatedCell } from "../Cell";
 
-interface Props {
-  cells: CellType[];
-}
-
-export const Board: FC<Props> = ({ cells }) => (
+export const Board = ({ cells }) => (
   <View>
     <View style={styles.backgroundContainer}>
       <View style={styles.cellPlaceholdersContainer}>
@@ -22,7 +17,7 @@ export const Board: FC<Props> = ({ cells }) => (
       </View>
     </View>
     <View style={styles.cellsContainer}>
-      {cells.map(cell => (
+      {cells.map((cell) => (
         <AnimatedCell cell={cell} key={cell.id} />
       ))}
     </View>
@@ -31,10 +26,10 @@ export const Board: FC<Props> = ({ cells }) => (
 
 const styles = StyleSheet.create({
   cellPlaceholdersContainer: {
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignContent: 'space-between',
+    flexWrap: "wrap",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "space-between",
     width: style.BOARD_SIZE,
     height: style.BOARD_SIZE,
     backgroundColor: colors.boardBackground,
@@ -51,7 +46,7 @@ const styles = StyleSheet.create({
     height: style.BOARD_SIZE,
   },
   backgroundContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
   },

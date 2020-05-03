@@ -1,16 +1,9 @@
-import React, { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
-import { Button } from '../Button';
+import { Button } from "../Button";
 
-interface Props {
-  onClickLeft: () => void;
-  onClickRight: () => void;
-  onClickUp: () => void;
-  onClickDown: () => void;
-}
-
-export const Controller: FC<Props> = ({
+export const Controller = ({
   onClickDown,
   onClickLeft,
   onClickRight,
@@ -21,7 +14,7 @@ export const Controller: FC<Props> = ({
       <Button title="↑" onPress={onClickUp} />
     </View>
 
-    <View style={[styles.row, { justifyContent: 'space-around' }]}>
+    <View style={[styles.row, { justifyContent: "space-around" }]}>
       <Button title="←" onPress={onClickLeft} />
       <Button title="→" onPress={onClickRight} />
     </View>
@@ -34,9 +27,9 @@ export const Controller: FC<Props> = ({
 
 const styles = StyleSheet.create({
   row: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     paddingVertical: 32,
   },
 });

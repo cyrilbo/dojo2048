@@ -1,14 +1,10 @@
-import React, { FC } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import React from "react";
+import { Text, View, StyleSheet } from "react-native";
 
-import { colors } from '../../theme/colors';
-import { style } from '../../theme/style';
+import { colors } from "../../theme/colors";
+import { style } from "../../theme/style";
 
-interface Props {
-  score: number;
-}
-
-export const Header: FC<Props> = ({ score }) => (
+export const Header = ({ score }) => (
   <View style={styles.container}>
     <View style={styles.titleContainer}>
       <Text style={styles.title}>2048</Text>
@@ -22,16 +18,16 @@ export const Header: FC<Props> = ({ score }) => (
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     padding: 16,
   },
   titleContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   title: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 40,
   },
   scoreContainer: {
@@ -39,16 +35,16 @@ const styles = StyleSheet.create({
     height: style.CELL_SIZE,
     borderRadius: style.CELL_RADIUS,
     backgroundColor: colors.boardBackground,
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 8,
   },
   scoreTitle: {
     color: colors.white,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   score: {
     color: colors.white,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 20,
   },
 });
